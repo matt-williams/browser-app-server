@@ -1,3 +1,7 @@
+SAMPLES = {
+  testing: new Sample("test.ogg")
+};
+
 var ua = new SIP.UA(UA_CONFIG);
 
 ua.on("registered", function() {
@@ -7,28 +11,26 @@ ua.on("registered", function() {
 ua.on("invite", function(session) {
   console.log("invited!");
   var mediaSession = new MediaSession(session);
-  session.accept({media: mediaSession.getMediaHint()});
   mediaSession.play(SAMPLES.testing);
+  session.accept({media: mediaSession.getMediaHint()});
+  mediaSession.record();
 
   var ctracker = new clm.tracker();
   ctracker.init(pModel);
-  ctracker.start(mediaSession.getVideo());
 
-  var x = 0;
+  var display = new Display(mediaSession.getContext("webgl"), 320, 240);
+
   var interval = setInterval(function() {
-    x++;
-    var context = mediaSession.getContext("2d");
-    context.clearRect(0, 0, 320, 240);
-    context.font = "50px Arial";
-    context.fillStyle = "rgb(255, 255, 0)";
-    context.fillText("Hello " + x, 20, 80);
-    ctracker.draw(mediaSession.canvas);
+    ctracker.track(mediaSession.getVideo());
+    display.render();
     mediaSession.sendFrame();
   }, 100);
+
   session.on("terminated", function() {
-    ctracker.stop();
-    mediaSession.destroy();
     clearInterval(interval);
+    mediaSession.getRecording(function(blob) {
+      console.log(blob);
+    });
+    mediaSession.destroy();
   });
-  console.log(mediaSession.getAudioTrack());
 });

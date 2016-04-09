@@ -16,10 +16,6 @@ function Sample(url) {
   request.send();
 }
 
-SAMPLES = {
-  testing: new Sample("test.ogg")
-};
-
 MediaSession = function(session) {
   this.session = session;
   this.div = document.createElement("div");
@@ -30,7 +26,6 @@ MediaSession = function(session) {
   this.video.width = 320;
   this.video.height = 240;
   this.video.muted = true;
-  this.video.autoplay = true;
   this.div.appendChild(this.video);
   this.canvas = document.createElement("canvas");
   this.canvas.width = 320;
@@ -47,22 +42,17 @@ MediaSession = function(session) {
       remote: this.video
     }
   };
+
+  var inputAudio = AUDIO_CONTEXT.createMediaStreamSource(this.session.mediaHandler.getRemoteStreams()[0]);
+  this.audioRecorder = new Recorder(inputAudio);
 }
 
 MediaSession.prototype.getVideo = function() {
   return this.video;
 }
 
-MediaSession.prototype.getAudioTrack = function() {
-  return this.session.mediaHandler.getRemoteStreams()[0].getAudioTracks()[0];
-}
-
 MediaSession.prototype.play = function(sample) {
-  if (this.bufferSource) {
-    this.bufferSource.stop();
-    this.bufferSource.disconnect();
-    this.bufferSource = null;
-  }
+  this.stopPlaying();
   this.bufferSource = AUDIO_CONTEXT.createBufferSource();
   this.bufferSource.buffer = sample.buffer;
   this.bufferSource.connect(this.output);
@@ -75,6 +65,24 @@ MediaSession.prototype.stopPlaying = function() {
     this.bufferSource.disconnect();
     this.bufferSource = null;
   }
+}
+
+MediaSession.prototype.record = function() {
+  this.stopRecording();
+  this.audioRecorder.record();
+}
+
+MediaSession.prototype.getRecording = function(callback) {
+  var otherThis = this;
+  this.audioRecorder.exportWAV(function(blob) {
+    console.log(blob);
+    callback(blob);
+  });
+  this.audioRecorder.clear();
+}
+
+MediaSession.prototype.stopRecording = function() {
+  this.audioRecorder.stop();
 }
 
 MediaSession.prototype.getContext = function(type) {
@@ -90,6 +98,8 @@ MediaSession.prototype.getMediaHint = function() {
 }
 
 MediaSession.prototype.destroy = function() {
+  this.video.pause();
+  this.stopRecording();
   this.stopPlaying();
   document.body.removeChild(this.div);
 }

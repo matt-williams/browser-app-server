@@ -4,3 +4,6 @@
 [submodule "modules/SIP.js"]
 	path = modules/SIP.js
 	url = https://github.com/onsip/SIP.js.git
+[submodule "modules/Recorderjs"]
+	path = modules/Recorderjs
+	url = https://github.com/mattdiamond/Recorderjs.git
