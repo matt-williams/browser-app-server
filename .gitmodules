@@ -1,0 +1,6 @@
+[submodule "modules/clmtrackr"]
+	path = modules/clmtrackr
+	url = https://github.com/auduno/clmtrackr.git
+[submodule "modules/SIP.js"]
+	path = modules/SIP.js
+	url = https://github.com/onsip/SIP.js.git
