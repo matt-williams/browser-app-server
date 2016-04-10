@@ -19,6 +19,7 @@ ua.on("invite", function(session) {
   ctracker.init(pModel);
 
   var display = new Display(mediaSession.getContext("webgl"), 320, 240);
+  display.speak(62);
 
   var interval = setInterval(function() {
     ctracker.track(mediaSession.getVideo());
@@ -28,9 +29,6 @@ ua.on("invite", function(session) {
 
   session.on("terminated", function() {
     clearInterval(interval);
-    mediaSession.getRecording(function(blob) {
-      console.log(blob);
-    });
-    mediaSession.destroy();
+    mediaSession.finished();
   });
 });

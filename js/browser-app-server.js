@@ -20,7 +20,7 @@ MediaSession = function(session) {
   this.session = session;
   this.div = document.createElement("div");
   var h1 = document.createElement("h1");
-  h1.innerHTML = session.remoteIdentity.uri;
+  h1.innerHTML = new Date() + " - " + session.remoteIdentity.uri;
   this.div.appendChild(h1);
   this.video = document.createElement("video");
   this.video.width = 320;
@@ -75,7 +75,6 @@ MediaSession.prototype.record = function() {
 MediaSession.prototype.getRecording = function(callback) {
   var otherThis = this;
   this.audioRecorder.exportWAV(function(blob) {
-    console.log(blob);
     callback(blob);
   });
   this.audioRecorder.clear();
@@ -97,9 +96,18 @@ MediaSession.prototype.getMediaHint = function() {
   return this.mediaHint;
 }
 
-MediaSession.prototype.destroy = function() {
+MediaSession.prototype.finished = function() {
   this.video.pause();
   this.stopRecording();
   this.stopPlaying();
-  document.body.removeChild(this.div);
+  this.div.removeChild(this.video);
+  this.div.removeChild(this.canvas);
+  var otherThis = this;
+  this.getRecording(function(blob) {
+    var a = document.createElement("a");
+    a.innerHTML = "Download recording (WAV)";
+    a.href = URL.createObjectURL(blob);
+    a.download = otherThis.session.remoteIdentity.uri + ".wav";
+    otherThis.div.appendChild(a);
+  });
 }

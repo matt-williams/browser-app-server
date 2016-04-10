@@ -80,6 +80,10 @@ Display = function(context, width, height) {
   this.renderer.setClearColor(0x1f5f5f);
   this.renderer.setSize(width, height);
   this.tick = 0;
+  this.speakTicks = 0;
+  this.surprisal = 0;
+  this.lookAtX = 0;
+  this.lookAtY = 0;
 }
 
 Display.prototype.boneRotate = function(name, x, y, z, xDelta, yDelta, zDelta) {
@@ -142,10 +146,28 @@ Display.prototype.render = function() {
   this.tick++;
   this.boneRotate("upper_arm.L", 0, 0, -0.5);
   this.boneRotate("upper_arm.R", 0, 0, 0.5);
-  this.boneRotate("jaw", Math.sin(this.tick) * 0.2 + 0.2, 0, 0);
+  if (this.speakTicks > 0) {
+    this.speakTicks--;
+    this.boneRotate("jaw", Math.sin(this.tick * 2) * 0.1 + 0.1, 0, 0);
+  } else {
+    this.boneRotate("jaw", this.surprisal * 0.5, 0, 0);
+  }
   //this.boneRotate("chest", undefined, undefined, undefined, 0.1, 0, 0);
   this.boneRotate("eye.L", 0, Math.sin(this.tick) * 0.3, 0);
-  this.boneRotate("eye.R", 0, -Math.sin(this.tick) * 0.3, 0);
-  //this.boneRotate("neck", undefined, undefined, undefined, 0, 0.2, 0);
+  this.boneRotate("eye.R", 0, Math.sin(this.tick) * 0.3, 0);
+  this.boneRotate("neck", 0, 0, 0);
   this.renderer.render(this.scene, this.camera);
+}
+
+Display.prototype.speak = function(speakTicks) {
+  this.speakTicks = speakTicks;
+}
+
+Display.prototype.setSurprisal = function(surprisal) {
+  this.surprisal = surprisal;
+}
+
+Display.prototype.lookAt = function(x, y) {
+  this.lookAtX = x;
+  this.lookAtY = y;
 }
