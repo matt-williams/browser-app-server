@@ -148,7 +148,7 @@ Display.prototype.render = function() {
   this.boneRotate("upper_arm.L", 0, 0, -0.5);
   this.boneRotate("upper_arm.R", 0, 0, 0.5);
   if (this.speakTicks > 0) {
-    this.boneRotate("jaw", Math.sin(this.tick * Math.PI / 5) * 0.1 + 0.1, 0, 0);
+    this.boneRotate("jaw", Math.sin(this.tick * Math.PI / 4) * 0.1 + 0.1, 0, 0);
     this.speakTicks--;
   } else {
     this.boneRotate("jaw", this.surprisal * 1.5, 0, 0);

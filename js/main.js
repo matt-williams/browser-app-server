@@ -1,5 +1,5 @@
 SAMPLES = {
-  testing: new Sample("test.ogg")
+  testing: new Sample("test.mp3")
 };
 
 var ua = new SIP.UA(UA_CONFIG);
@@ -21,7 +21,7 @@ ua.on("invite", function(session) {
   ec.init(emotionModel);
 
   var display = new Display(mediaSession.getContext("webgl"), 320, 240);
-  display.speak(62);
+  display.speak(95);
 
   function doTracking() {
     ctracker.track(mediaSession.getVideo());
