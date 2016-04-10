@@ -35,7 +35,10 @@ ua.on("invite", function(session) {
     context.drawImage(mediaSession.video, 0, 0, 320, 240);
     ctracker.draw(mediaSession.scratchCanvas);
     var parameters = ctracker.getCurrentParameters();
-    display.lookAt(parameters[3] - 40, parameters[2] - 90);
+    var convergence = ctracker.getConvergence();
+    if (convergence < 999999) {
+      display.lookAt(parameters[2] - 90, parameters[3] - 20);
+    }
     display.render();
     mediaSession.sendFrame();
   }, 100);

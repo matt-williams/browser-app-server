@@ -168,7 +168,7 @@ Display.prototype.render = function() {
   //this.boneRotate("chest", undefined, undefined, undefined, 0.1, 0, 0);
   this.boneRotate("eye.L", 0, 0, 0);
   this.boneRotate("eye.R", 0, 0, 0);
-  this.boneRotate("neck", Math.atan2(this.lookAtX, 300), Math.atan2(this.lookAtY, 300), 0);
+  this.boneRotate("neck", Math.atan2(this.lookAtY, 300), Math.atan2(this.lookAtX, 300), 0);
   this.renderer.render(this.scene, this.camera);
 }
 
