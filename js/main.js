@@ -28,6 +28,9 @@ ua.on("invite", function(session) {
   requestAnimationFrame(doTracking);
 
   var interval = setInterval(function() {
+    if (Math.random() < 0.02) {
+      display.blink(4);
+    }
     var context = mediaSession.scratchCanvas.getContext("2d");
     context.drawImage(mediaSession.video, 0, 0, 320, 240);
     ctracker.draw(mediaSession.scratchCanvas);
