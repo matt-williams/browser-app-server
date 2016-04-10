@@ -27,6 +27,10 @@ MediaSession = function(session) {
   this.video.height = 240;
   this.video.muted = true;
   this.div.appendChild(this.video);
+  this.scratchCanvas = document.createElement("canvas");
+  this.scratchCanvas.width = 320;
+  this.scratchCanvas.height = 240;
+  this.div.appendChild(this.scratchCanvas);
   this.canvas = document.createElement("canvas");
   this.canvas.width = 320;
   this.canvas.height = 240;
@@ -101,6 +105,7 @@ MediaSession.prototype.finished = function() {
   this.stopRecording();
   this.stopPlaying();
   this.div.removeChild(this.video);
+  this.div.removeChild(this.scratchCanvas);
   this.div.removeChild(this.canvas);
   var otherThis = this;
   this.getRecording(function(blob) {

@@ -153,9 +153,9 @@ Display.prototype.render = function() {
     this.boneRotate("jaw", this.surprisal * 0.5, 0, 0);
   }
   //this.boneRotate("chest", undefined, undefined, undefined, 0.1, 0, 0);
-  this.boneRotate("eye.L", 0, Math.sin(this.tick) * 0.3, 0);
-  this.boneRotate("eye.R", 0, Math.sin(this.tick) * 0.3, 0);
-  this.boneRotate("neck", 0, 0, 0);
+  this.boneRotate("eye.L", 0, 0, 0);
+  this.boneRotate("eye.R", 0, 0, 0);
+  this.boneRotate("neck", Math.atan2(this.lookAtX, 300), Math.atan2(this.lookAtY, 300), 0);
   this.renderer.render(this.scene, this.camera);
 }
 

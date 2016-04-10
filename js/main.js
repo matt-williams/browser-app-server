@@ -21,13 +21,24 @@ ua.on("invite", function(session) {
   var display = new Display(mediaSession.getContext("webgl"), 320, 240);
   display.speak(62);
 
-  var interval = setInterval(function() {
+  function doTracking() {
     ctracker.track(mediaSession.getVideo());
+    requestAnimationFrame(doTracking);
+  }
+  requestAnimationFrame(doTracking);
+
+  var interval = setInterval(function() {
+    var context = mediaSession.scratchCanvas.getContext("2d");
+    context.drawImage(mediaSession.video, 0, 0, 320, 240);
+    ctracker.draw(mediaSession.scratchCanvas);
+    var parameters = ctracker.getCurrentParameters();
+    display.lookAt(parameters[3] - 40, parameters[2] - 90);
     display.render();
     mediaSession.sendFrame();
   }, 100);
 
   session.on("terminated", function() {
+    cancelAnimationFrame(doTracking);
     clearInterval(interval);
     mediaSession.finished();
   });
