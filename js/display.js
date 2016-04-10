@@ -151,7 +151,7 @@ Display.prototype.render = function() {
     this.boneRotate("jaw", Math.sin(this.tick * Math.PI / 5) * 0.1 + 0.1, 0, 0);
     this.speakTicks--;
   } else {
-    this.boneRotate("jaw", this.surprisal * 0.5, 0, 0);
+    this.boneRotate("jaw", this.surprisal * 1.5, 0, 0);
   }
   if (this.blinkTicks > 0) {
     this.boneRotate("uplid.L", Math.sin(this.blinkTicks * Math.PI / 4) * 1.5, 0, 0);
